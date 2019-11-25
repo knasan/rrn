@@ -1,4 +1,4 @@
-# RRN - Recursiv Rename
+# RRN - Recursive Rename
 
 ## Description
 [de] RRN - Recursive Rename ist ein kleines Kommandozeilen Tool das Verzeichnisse und Dateien durchsucht und durch das angegebene Zeichen ersetzt. 
