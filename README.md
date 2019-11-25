@@ -15,7 +15,7 @@
 
 ## Build from source
 
-```bash
+```shell
 git clone https://github.com/knasan/rrn.git
 cd rrn
 mkdir build
@@ -151,7 +151,7 @@ testdir/
 [de] Ich Empfehle davor ein Test druchzuführen (-t), um zu sehen was rrn machen würde übergebe den Schalter (-v).
 [en] I recommend taking a test (-t) to see what rrn would do by giving the switch (-v).
 
-```bash
+```shell
 ./rrn -d testdir/ -s ' ' -r '_' -t -v
 
 testdir/destdir 7/testfile 3 => testdir/destdir 7/testfile_3
@@ -269,7 +269,7 @@ testdir/destdir 2 => testdir/destdir_2
 [de] Hier das Resultat.
 [en] Here is the result
 
-```bash
+```shell
 ./rrn -d testdir/ -s ' ' -r '_'
 
 testdir/
