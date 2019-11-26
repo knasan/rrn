@@ -1,17 +1,18 @@
 # RRN - Recursive Rename
 
 ## Description
-[de] RRN - Recursive Rename ist ein kleines Kommandozeilen Tool das Verzeichnisse und Dateien durchsucht und durch das angegebene Zeichen ersetzt. 
+
+[de] RRN - Recursive Rename ist ein kleines Kommandozeilen Tool das Verzeichnisse und Dateien durchsucht und durch das angegebene Zeichen ersetzt.
 
 [en] RRN - Recursive Rename is a small command line tool that searches directories and files and replaces them with the given character.
 
 ## Dependencies
-  * cmake
+
+* cmake
   * libboost >= 1.67-dev
   * libboost-program-options1.67-dev
   * libboost-filesystem1.67-dev
   * libboost-system1.67-dev
-
 
 ## Build from source
 
@@ -28,7 +29,7 @@ make
 [de] Das Verzeichnis testdir hat Dateien die Leerzeichen enthalten (ugly).
 [en] The testdir directory has files that contain spaces (ugly).
 
-```
+```shell
 testdir/
 ├── destdir 1
 │   ├── testfile 1
@@ -141,14 +142,16 @@ testdir/
     ├── testfile 8
     └── testfile 9
 
-10 directories, 100 files```
+10 directories, 100 files
+```
 
-[de] Um all Leerzeichen durch einen unterstrich zu ersetzten reicht der einfache Aufruf von 
+[de] Um all Leerzeichen durch einen unterstrich zu ersetzten reicht der einfache Aufruf von
 [en] To replace all spaces with an underscore, simply call
 
 `rrn -s ' ' -r '_' -d testdir`
 
 [de] Ich Empfehle davor ein Test druchzuführen (-t), um zu sehen was rrn machen würde übergebe den Schalter (-v).
+
 [en] I recommend taking a test (-t) to see what rrn would do by giving the switch (-v).
 
 ```shell
@@ -386,3 +389,36 @@ testdir/
 
 10 directories, 100 files
 ```
+## Build on Mac
+
+### Dependencies
+[de] OSx Konfiguration
+* Xcode aus dem App-Store installieren
+  * führe `xcode-select --install` in der konsole aus (aktiviert Entwickler Komandozeilen Tools)
+  * homebrew Konfigurieren [Homebrew](https://brew.sh/index_de)
+    * `brew update`
+    * `brew install cmake`
+    * `brew instal boost`
+    * `brew install git` nur wenn du noch kein Git Installiert hast.
+    
+    In der Konsole in deinem Workspace welchseln und folgende Befehle ausführen.
+    `git clone https://github.com/knasan/rrn.git` 
+    `cd rrn`
+    `mkdir build`
+    `clang++ -std=c++17 ../main.cpp ../rrn.cpp  -lboost_system -lboost_filesystem -lboost_program_options -I/usr/local/lib/include/ -o rrn`
+    
+[en] OSx configuration
+* Install Xcode from the App Store
+* execute `xcode-select --install` in the console (activates developer command line tools)
+* homebrew Configure [Homebrew](https://brew.sh/index_de)
+  * `brew update`
+  * `brew install cmake`
+  * `brew instal boost`
+  * `brew install git` only if you have not installed git yet.
+  
+Change to the console in your workspace and execute the following commands.
+ * `git clone https://github.com/knasan/rrn.git` 
+ * `cd rrn`
+ * `mkdir build`
+  * `clang++ -std=c++17 ../main.cpp ../rrn.cpp  -lboost_system -lboost_filesystem -lboost_program_options -I/usr/local/lib/include/ -o rrn`
+
