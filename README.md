@@ -16,6 +16,8 @@
 
 ## Build from source
 
+### Linux
+
 ```shell
 git clone https://github.com/knasan/rrn.git
 cd rrn
@@ -23,6 +25,38 @@ mkdir build
 cmake ../
 make
 ```
+## macOS
+
+### Dependencies
+[de] OSx Konfiguration
+* Xcode aus dem App-Store installieren
+  * führe `xcode-select --install` in der konsole aus (aktiviert Entwickler Komandozeilen Tools)
+  * homebrew Konfigurieren [Homebrew](https://brew.sh/index_de)
+    * `brew update`
+    * `brew install cmake`
+    * `brew instal boost`
+    * `brew install git` nur wenn du noch kein Git Installiert hast.
+    
+    In der Konsole in deinem Workspace welchseln und folgende Befehle ausführen.
+    `git clone https://github.com/knasan/rrn.git` 
+    `cd rrn`
+    `mkdir build`
+    `clang++ -std=c++17 ../main.cpp ../rrn.cpp  -lboost_system -lboost_filesystem -lboost_program_options -I/usr/local/lib/include/ -o rrn`
+    
+[en] OSx configuration
+* Install Xcode from the App Store
+* execute `xcode-select --install` in the console (activates developer command line tools)
+* homebrew Configure [Homebrew](https://brew.sh/index_de)
+  * `brew update`
+  * `brew install cmake`
+  * `brew instal boost`
+  * `brew install git` only if you have not installed git yet.
+  
+Change to the console in your workspace and execute the following commands.
+ * `git clone https://github.com/knasan/rrn.git` 
+ * `cd rrn`
+ * `mkdir build`
+  * `clang++ -std=c++17 ../main.cpp ../rrn.cpp  -lboost_system -lboost_filesystem -lboost_program_options -I/usr/local/lib/include/ -o rrn`
 
 ## Examples
 
@@ -389,36 +423,3 @@ testdir/
 
 10 directories, 100 files
 ```
-## Build on Mac
-
-### Dependencies
-[de] OSx Konfiguration
-* Xcode aus dem App-Store installieren
-  * führe `xcode-select --install` in der konsole aus (aktiviert Entwickler Komandozeilen Tools)
-  * homebrew Konfigurieren [Homebrew](https://brew.sh/index_de)
-    * `brew update`
-    * `brew install cmake`
-    * `brew instal boost`
-    * `brew install git` nur wenn du noch kein Git Installiert hast.
-    
-    In der Konsole in deinem Workspace welchseln und folgende Befehle ausführen.
-    `git clone https://github.com/knasan/rrn.git` 
-    `cd rrn`
-    `mkdir build`
-    `clang++ -std=c++17 ../main.cpp ../rrn.cpp  -lboost_system -lboost_filesystem -lboost_program_options -I/usr/local/lib/include/ -o rrn`
-    
-[en] OSx configuration
-* Install Xcode from the App Store
-* execute `xcode-select --install` in the console (activates developer command line tools)
-* homebrew Configure [Homebrew](https://brew.sh/index_de)
-  * `brew update`
-  * `brew install cmake`
-  * `brew instal boost`
-  * `brew install git` only if you have not installed git yet.
-  
-Change to the console in your workspace and execute the following commands.
- * `git clone https://github.com/knasan/rrn.git` 
- * `cd rrn`
- * `mkdir build`
-  * `clang++ -std=c++17 ../main.cpp ../rrn.cpp  -lboost_system -lboost_filesystem -lboost_program_options -I/usr/local/lib/include/ -o rrn`
-
