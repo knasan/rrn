@@ -37,7 +37,7 @@ int main(int argc, char** argv)
     po::options_description desc("Allowed options");
     desc.add_options()
         ("help,h", "help screen")
-        ("destination,d", po::value<std::string>(),
+        ("destination,d", po::value<std::string>()->required(),
          "destination file or directory")
         ("search-character,s", po::value<std::string>()->required(),
          "search character")
@@ -67,8 +67,6 @@ int main(int argc, char** argv)
        */
       if (vm.count("destination"))
         destination = vm["destination"].as<std::string>();
-      else
-        destination = "./";
 
       /** --search-character
        */

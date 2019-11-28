@@ -15,11 +15,11 @@
 namespace fs = boost::filesystem;
 
 /**
- * @brief Rrn::renameString
- * @param s_search
- * @param s_replace
- * @param s_toReplace
- * @return
+ * @brief Rrn::rrnameString
+ * @param s_search character of search
+ * @param s_replace character to replace
+ * @param s_toReplace character
+ * @return call boost::replace_all_copy function
  */
 std::string Rrn::renameString(std::string s_search, std::string s_replace,
                               std::string s_toReplace)
@@ -29,10 +29,10 @@ std::string Rrn::renameString(std::string s_search, std::string s_replace,
 
 /**
  * @brief Rrn::rrname
- * @param s_search
- * @param s_replace
- * @param s_destination
- * @return
+ * @param s_search character of search
+ * @param s_replace character to replace
+ * @param s_destination work directory
+ * @return boolean
  */
 bool Rrn::rrname(std::string s_search,
                           std::string s_replace,
@@ -122,7 +122,7 @@ bool Rrn::rrname(std::string s_search,
 
 /**
  * @brief Rrn::fillDirectoryVector
- * @param str_directory
+ * @param s_directory fill vecotor
  */
 void Rrn::fillDirectoryVector(std::string s_directory)
 {
@@ -138,10 +138,10 @@ void Rrn::fillDirectoryVector(std::string s_directory)
 
 /**
  * @brief Rrn::splitStrOnLast
- * @param str_search
- * @param str_replace
- * @param str_destination
- * @return
+ * @param s_search character of search
+ * @param s_replace character to replace
+ * @param s_destination work directory
+ * @return list of last_renamed
  * Example:
             /home/users/user/this is a directory/with a directory
   result => /home/users/user/this is a directory/with_a_directory
@@ -215,7 +215,7 @@ std::string Rrn::splitStrOnLast(std::string s_search,
 
 /**
  * @brief Rrn::isDirAndAtWithSlash
- * @param str_dir
+ * @param s_dir  Adress for directory
  * @todo Check if the last character is on /.
  */
 void Rrn::isDirAndAtWithSlash(std::string &s_dir)
