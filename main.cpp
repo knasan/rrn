@@ -2,12 +2,13 @@
  * @title              : rrn, recursive rename
  * @author             : Sandy Marko Knauer
  * @email              : github@knasan.de
- * @version            : 0.0.1
- * @last modified      : Wed, 08 Aug 2018 00:00:34 +0200
+ * @version            : 0.0.2
+ * @last modified      : Wed, 01 Jan 2020 23:49:02 +0100
  */
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 // Boost
 #include <boost/program_options.hpp>
@@ -27,6 +28,9 @@ namespace po = boost::program_options;
 int main(int argc, char** argv)
 {
   std::string destination, find, replace;
+  // Excludes: all -e options, exlcudefiles save files and excludedirectories all directories to exclude.
+  // Testing: excludeerrors, include all errors (file not found)
+  std::vector<std::string> excludes, excludefiles, excludedirecories, excludeerrors;
   Rrn *rrn = new Rrn();
   std::string appName = boost::filesystem::basename(argv[0]);
   try
@@ -39,6 +43,8 @@ int main(int argc, char** argv)
         ("help,h", "help screen")
         ("destination,d", po::value<std::string>()->required(),
          "destination file or directory")
+        ("excludes,e", po::value<std::vector<std::string>>(),
+         "exclude file/direcory")
         ("search-character,s", po::value<std::string>()->required(),
          "search character")
         ("replace-character,r", po::value<std::string>()->required(),
@@ -57,11 +63,44 @@ int main(int argc, char** argv)
       /** --help option
        */
       if ((vm.count("help")) || (argc < 4) )
-      {
-        std::cout << appName << std::endl;
-        std::cout << desc    << std::endl;
-        return ERROR_IN_COMMAND_LINE;
-      }
+        {
+          std::cout << appName << std::endl;
+          std::cout << desc    << std::endl;
+          return ERROR_IN_COMMAND_LINE;
+        }
+
+      /** --exclude file and directory
+       */
+      if (vm.count("excludes")) {
+          excludes = vm["excludes"].as<std::vector<std::string>>();
+          for (auto const& exclude: excludes) {
+              // exist file or direcory?
+              if(boost::filesystem::exists(exclude))
+                {
+                  if (boost::filesystem::is_regular_file(exclude))
+                    {
+                      // files
+                      excludefiles.push_back(exclude);
+                    } else {
+                      // direcories
+                      excludedirecories.push_back(exclude);
+                    }
+                } else {
+                  // File not found
+                  excludeerrors.push_back(exclude);
+                }
+            }
+          // check for errors found. Print all errors and exit
+          if (excludeerrors.size() != 0) {
+              //errors
+              for (auto const& error: excludeerrors) {
+                  std::cerr << "Error - File not found: " << error << '\n';
+                }
+              return 99;
+            }
+        }
+
+      // ----------------------------------------------------------
 
       /** --destination, if not specified, the current directory is searched
        */
@@ -97,13 +136,13 @@ int main(int argc, char** argv)
     }
 
     // application
-    bool ok = rrn->rrname(find, replace, destination);
+    bool ok = rrn->rrname(find, replace, destination, excludefiles, excludedirecories);
     delete(rrn);
     if (!ok) {
-      std::cerr << "ERROR: " << appName << " failed - Sorry for inconsistency."
-                << std::endl;
-      return ERROR_UNHANDLED_EXCEPTION;
-    }
+        std::cerr << "ERROR: " << appName << " failed - Sorry for inconsistency."
+                  << std::endl;
+        return ERROR_UNHANDLED_EXCEPTION;
+      }
   }
   catch(std::exception& e)
   {
