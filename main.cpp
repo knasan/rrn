@@ -57,11 +57,11 @@ int main(int argc, char** argv)
       /** --help option
        */
       if ((vm.count("help")) || (argc < 4) )
-      {
-        std::cout << appName << std::endl;
-        std::cout << desc    << std::endl;
-        return ERROR_IN_COMMAND_LINE;
-      }
+        {
+          std::cout << appName << std::endl;
+          std::cout << desc    << std::endl;
+          return ERROR_IN_COMMAND_LINE;
+        }
 
       /** --destination, if not specified, the current directory is searched
        */
@@ -100,10 +100,10 @@ int main(int argc, char** argv)
     bool ok = rrn->rrname(find, replace, destination);
     delete(rrn);
     if (!ok) {
-      std::cerr << "ERROR: " << appName << " failed - Sorry for inconsistency."
-                << std::endl;
-      return ERROR_UNHANDLED_EXCEPTION;
-    }
+        std::cerr << "ERROR: " << appName << " failed - Sorry for inconsistency."
+                  << std::endl;
+        return ERROR_UNHANDLED_EXCEPTION;
+      }
   }
   catch(std::exception& e)
   {
