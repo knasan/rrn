@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 // Boost
 #include <boost/program_options.hpp>
@@ -27,6 +28,7 @@ namespace po = boost::program_options;
 int main(int argc, char** argv)
 {
   std::string destination, find, replace;
+  std::vector<std::string> excludes, excludefiles, excludedirecories;
   Rrn *rrn = new Rrn();
   std::string appName = boost::filesystem::basename(argv[0]);
   try
@@ -39,6 +41,8 @@ int main(int argc, char** argv)
         ("help,h", "help screen")
         ("destination,d", po::value<std::string>()->required(),
          "destination file or directory")
+        ("excludes,e", po::value<std::vector<std::string>>(),
+         "exclude files and direcory")
         ("search-character,s", po::value<std::string>()->required(),
          "search character")
         ("replace-character,r", po::value<std::string>()->required(),
@@ -61,6 +65,34 @@ int main(int argc, char** argv)
           std::cout << appName << std::endl;
           std::cout << desc    << std::endl;
           return ERROR_IN_COMMAND_LINE;
+        }
+
+      /** --exclude file and directory
+       */
+      if (vm.count("excludes")) {
+          excludes = vm["excludes"].as<std::vector<std::string>>();
+          for (auto const& exclude: excludes) {
+              // exist file or direcory?
+              if(boost::filesystem::exists(exclude))
+                {
+                  if (boost::filesystem::is_regular_file(exclude))
+                    {
+                      // files
+                      // TODO: append to excludefiles
+                      std::cout << "File: " << exclude << '\n';
+                    } else {
+                      // direcories
+                      // TODO: append to excludedirectories
+                      std::cout << "Directory: " << exclude << '\n';
+                    }
+                } else {
+                  // File not found
+                  // TODO; append to errors
+                  std::cerr << "file or directory not found: " << exclude << '\n';
+                }
+            }
+          // check for errors found. Print all errors and exit
+          return 0;
         }
 
       /** --destination, if not specified, the current directory is searched
