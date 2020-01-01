@@ -28,7 +28,9 @@ namespace po = boost::program_options;
 int main(int argc, char** argv)
 {
   std::string destination, find, replace;
-  std::vector<std::string> excludes, excludefiles, excludedirecories;
+  // Excludes: all -e options, exlcudefiles save files and excludedirectories all directories to exclude.
+  // Testing: excludeerrors, include all errors (file not found)
+  std::vector<std::string> excludes, excludefiles, excludedirecories, excludeerrors;
   Rrn *rrn = new Rrn();
   std::string appName = boost::filesystem::basename(argv[0]);
   try
@@ -78,22 +80,31 @@ int main(int argc, char** argv)
                   if (boost::filesystem::is_regular_file(exclude))
                     {
                       // files
-                      // TODO: append to excludefiles
-                      std::cout << "File: " << exclude << '\n';
+                      excludefiles.push_back(exclude);
                     } else {
                       // direcories
-                      // TODO: append to excludedirectories
-                      std::cout << "Directory: " << exclude << '\n';
+                      excludedirecories.push_back(exclude);
                     }
                 } else {
                   // File not found
-                  // TODO; append to errors
-                  std::cerr << "file or directory not found: " << exclude << '\n';
+                  excludeerrors.push_back(exclude);
                 }
             }
           // check for errors found. Print all errors and exit
-          return 0;
+          if (excludeerrors.size() != 0) {
+              //errors
+              for (auto const& error: excludeerrors) {
+                  std::cerr << "Error - File not found: " << error << '\n';
+                }
+              return 99;
+            }
         }
+
+      // TODO: excludefiles and excludedirectories to rrn function
+
+      std::cout << excludefiles.size() << "\n";
+      std::cout << excludedirecories.size() << "\n";
+      // ----------------------------------------------------------
 
       /** --destination, if not specified, the current directory is searched
        */
