@@ -36,7 +36,9 @@ std::string Rrn::renameString(std::string s_search, std::string s_replace,
  */
 bool Rrn::rrname(std::string s_search,
                  std::string s_replace,
-                 std::string s_destination)
+                 std::string s_destination,
+                 std::vector<std::string> e_files,
+                 std::vector<std::string> e_dirs)
 {
   bool ok = true;
   if (fs::is_directory(s_destination))
@@ -54,6 +56,27 @@ bool Rrn::rrname(std::string s_search,
           std::ostringstream oss_tmpName;
           oss_tmpName << *rev_from;
           std::string s_tmp_str_destination = oss_tmpName.str();
+
+          // TODO: file or directory with boost regex ...
+          // with regex ignore errors ...
+          if (fs::is_regular_file(oss_tmpName.str()))
+            {
+              // regular file
+              if (std::find(e_files.begin(), e_files.end(), oss_tmpName.str()) != e_files.end())
+              {
+                  rev_from++;
+                  continue;
+              }
+            }
+          else
+            {
+              // directories
+              if (std::find(e_dirs.begin(), e_dirs.end(), oss_tmpName.str()) != e_dirs.end())
+              {
+                  rev_from++;
+                  continue;
+              }
+            }
 
           std::string s_new_destination = splitStrOnLast(s_search,
                                                          s_replace,

@@ -2,8 +2,8 @@
  * @title              : rrn, recursive rename
  * @author             : Sandy Marko Knauer
  * @email              : github@knasan.de
- * @version            : 0.0.1
- * @last modified      : Wed, 08 Aug 2018 00:00:34 +0200
+ * @version            : 0.0.2
+ * @last modified      : Wed, 01 Jan 2020 23:49:02 +0100
  */
 
 #include <iostream>
@@ -44,7 +44,7 @@ int main(int argc, char** argv)
         ("destination,d", po::value<std::string>()->required(),
          "destination file or directory")
         ("excludes,e", po::value<std::vector<std::string>>(),
-         "exclude files and direcory")
+         "exclude file/direcory")
         ("search-character,s", po::value<std::string>()->required(),
          "search character")
         ("replace-character,r", po::value<std::string>()->required(),
@@ -100,10 +100,6 @@ int main(int argc, char** argv)
             }
         }
 
-      // TODO: excludefiles and excludedirectories to rrn function
-
-      std::cout << excludefiles.size() << "\n";
-      std::cout << excludedirecories.size() << "\n";
       // ----------------------------------------------------------
 
       /** --destination, if not specified, the current directory is searched
@@ -140,7 +136,7 @@ int main(int argc, char** argv)
     }
 
     // application
-    bool ok = rrn->rrname(find, replace, destination);
+    bool ok = rrn->rrname(find, replace, destination, excludefiles, excludedirecories);
     delete(rrn);
     if (!ok) {
         std::cerr << "ERROR: " << appName << " failed - Sorry for inconsistency."

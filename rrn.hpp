@@ -10,7 +10,9 @@ class Rrn
 public:
   bool rrname(std::string s_search,
               std::string s_replace,
-              std::string s_destination);
+              std::string s_destination,
+              std::vector<std::string> excludefiles,
+              std::vector<std::string> excludedirectories);
   bool verbose, tryrun;
 
 private:
