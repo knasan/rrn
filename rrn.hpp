@@ -22,7 +22,7 @@ private:
                            std::string s_replace,
                            std::string s_toReplace);
 
-  void fillDirectoryVector(std::string s_directory);
+  void fillDirectoryVector(std::string s_directory, std::vector<std::string> excludefiles, std::vector<std::string> excludedirectories);
 
   std::string splitStrOnLast(std::string s_search,
                              std::string s_replace,

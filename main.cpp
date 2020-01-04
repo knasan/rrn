@@ -2,8 +2,8 @@
  * @title              : rrn, recursive rename
  * @author             : Sandy Marko Knauer
  * @email              : github@knasan.de
- * @version            : 0.0.2
- * @last modified      : Wed, 01 Jan 2020 23:49:02 +0100
+ * @version            : 0.0.3
+ * @last modified      : Sat, 04 Jan 2020 22:42:12 +0000
  */
 
 #include <iostream>
@@ -71,7 +71,8 @@ int main(int argc, char** argv)
 
       /** --exclude file and directory
        */
-      if (vm.count("excludes")) {
+      if (vm.count("excludes"))
+        {
           excludes = vm["excludes"].as<std::vector<std::string>>();
           for (auto const& exclude: excludes) {
               // exist file or direcory?
@@ -99,7 +100,6 @@ int main(int argc, char** argv)
               return 99;
             }
         }
-
       // ----------------------------------------------------------
 
       /** --destination, if not specified, the current directory is searched

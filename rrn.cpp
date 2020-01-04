@@ -21,8 +21,7 @@ namespace fs = boost::filesystem;
  * @param s_toReplace character
  * @return call boost::replace_all_copy function
  */
-std::string Rrn::renameString(std::string s_search, std::string s_replace,
-                              std::string s_toReplace)
+std::string Rrn::renameString(std::string s_search, std::string s_replace, std::string s_toReplace)
 {
   return boost::replace_all_copy(s_toReplace, s_search, s_replace);
 }
@@ -34,16 +33,13 @@ std::string Rrn::renameString(std::string s_search, std::string s_replace,
  * @param s_destination work directory
  * @return boolean
  */
-bool Rrn::rrname(std::string s_search,
-                 std::string s_replace,
-                 std::string s_destination,
-                 std::vector<std::string> e_files,
-                 std::vector<std::string> e_dirs)
+bool Rrn::rrname(std::string s_search, std::string s_replace, std::string s_destination,
+                 std::vector<std::string> e_files, std::vector<std::string> e_dirs)
 {
   bool ok = true;
   if (fs::is_directory(s_destination))
     {
-      fillDirectoryVector(s_destination);
+      fillDirectoryVector(s_destination, e_files, e_dirs);
 
       // directory reverse iterator
       typedef std::vector<std::string>::iterator iter;
@@ -51,36 +47,14 @@ bool Rrn::rrname(std::string s_search,
       iter until (v_directory.end());
       std::reverse_iterator<iter> rev_until (from);
       std::reverse_iterator<iter> rev_from (until);
+
       while (rev_from != rev_until)
         {
           std::ostringstream oss_tmpName;
           oss_tmpName << *rev_from;
           std::string s_tmp_str_destination = oss_tmpName.str();
 
-          // TODO: file or directory with boost regex ...
-          // with regex ignore errors ...
-          if (fs::is_regular_file(oss_tmpName.str()))
-            {
-              // regular file
-              if (std::find(e_files.begin(), e_files.end(), oss_tmpName.str()) != e_files.end())
-              {
-                  rev_from++;
-                  continue;
-              }
-            }
-          else
-            {
-              // directories
-              if (std::find(e_dirs.begin(), e_dirs.end(), oss_tmpName.str()) != e_dirs.end())
-              {
-                  rev_from++;
-                  continue;
-              }
-            }
-
-          std::string s_new_destination = splitStrOnLast(s_search,
-                                                         s_replace,
-                                                         s_tmp_str_destination);
+          std::string s_new_destination = splitStrOnLast(s_search, s_replace, s_tmp_str_destination);
 
           if (s_tmp_str_destination == s_new_destination)
             {
@@ -90,8 +64,7 @@ bool Rrn::rrname(std::string s_search,
 
           if (verbose)
             {
-              std::cout << s_tmp_str_destination << " => " << s_new_destination
-                        << std::endl;
+              std::cout << s_tmp_str_destination << " => " << s_new_destination << std::endl;
             }
 
           fs::path oldPath{s_tmp_str_destination};
@@ -115,8 +88,7 @@ bool Rrn::rrname(std::string s_search,
   // it no longer needs to be scanned for file or directory.
   // because the directory is not listed in v_directory vector.
   // therefore, everything that comes can be renamed.
-  std::string s_new_destination = renameString(s_search, s_replace,
-                                               s_destination);
+  std::string s_new_destination = renameString(s_search, s_replace, s_destination);
   fs::path oldPath{s_destination};
   fs::path newPath{s_new_destination};
 
@@ -124,8 +96,7 @@ bool Rrn::rrname(std::string s_search,
     {
       if (verbose)
         {
-          std::cout << s_destination << " => " << s_new_destination
-                    << std::endl;
+          std::cout << s_destination << " => " << s_new_destination << std::endl;
         }
 
       try {
@@ -147,15 +118,35 @@ bool Rrn::rrname(std::string s_search,
  * @brief Rrn::fillDirectoryVector
  * @param s_directory fill vecotor
  */
-void Rrn::fillDirectoryVector(std::string s_directory)
+void Rrn::fillDirectoryVector(std::string s_directory, std::vector<std::string> e_files, std::vector<std::string> e_dirs)
 {
   v_directory.clear();
   fs::path dir{s_directory};
   fs::recursive_directory_iterator rit{dir};
+  std::string s_tmp;
+  bool next = false;
   while (rit != fs::recursive_directory_iterator{})
     {
-      v_directory.push_back(rit->path().string());
+      s_tmp = rit->path().string();
+      // is file or directory exclude?
+      for(auto const& dir: e_dirs)
+        {
+          if(s_tmp.find(dir) != std::string::npos)
+            {
+              next = true;
+            }
+        }
+      for(auto const& file: e_files)
+        {
+          if(s_tmp.find(file) != std::string::npos)
+            {
+              next = true;
+            }
+        }
+      if (!next)
+        v_directory.push_back(rit->path().string());
       rit++;
+      next = false;
     }
 }
 
