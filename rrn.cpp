@@ -56,12 +56,6 @@ bool Rrn::rrname(std::string s_search, std::string s_replace, std::string s_dest
 
           std::string s_new_destination = splitStrOnLast(s_search, s_replace, s_tmp_str_destination);
 
-          if (s_tmp_str_destination == s_new_destination)
-            {
-              rev_from++;
-              continue;
-            }
-
           if (verbose)
             {
               std::cout << s_tmp_str_destination << " => " << s_new_destination << std::endl;
@@ -140,13 +134,19 @@ void Rrn::fillDirectoryVector(std::string s_directory, std::vector<std::string> 
         {
           if(s_tmp.find(file) != std::string::npos)
             {
+              if(verbose)
+                {
+                  std::cout << "File for exclude: " << file << std::endl;
+                }
               next = true;
             }
         }
-      if (!next)
-        v_directory.push_back(rit->path().string());
-      rit++;
+      if(!next)
+        {
+          v_directory.push_back(s_tmp);
+        }
       next = false;
+      rit++;
     }
 }
 
